@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password generator</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript">
+      function CopyPass() {
+        /* Get the text field */
+        var copyText = document.getElementById("final_pass");
+
+        /* Select the text field */
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+        }
+
+      function check_if_options() {
+        var checked = document.querySelectorAll('input:checked');
+
+        if (checked.length === 0) {
+            // there are no checked checkboxes
+            alert('You should check some options');
+            return false;
+        }
+      }
+    </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Tikhon's password generator</h1>
+    <div class="form-area">
+    <form onsubmit="return check_if_options();" method="POST" action="{{ url_for('index') }}">
+      {{ form.csrf_token }} <br>
+      Password length: {{ form.length }} <br>
+      {{ form.is_use_numbers }} Numbers (e.g. 1, 2, 3 ...) <br>
+      {{ form.is_use_letters }} Letters (e.g. a, b, c ...) <br>
+      {{ form.is_use_capitals }} Capitals (e.g. A, B, C ...) <br>
+      {{ form.is_use_specials }} Characters (e.g. !@#$ ...) <br>
+      <button type="submit" class="button" style="vertical-align:middle"><span>Generate password!</span></button>
+    </form> 
+
+    </div>
+    <div class="final_pass">
+        <input name="final_pass" id="final_pass" type="text" size="75" placeholder="Your new password will appear here." value="{{ password }}">
+        <input type="button" onclick="CopyPass();" style="vertical-align:middle" value="Copy"></input>
+    </div>
+
+<!--    <div class="db_save">
+      <input name="subj" id="subj" type="text" size="75" placeholder="Subject of your password. e.g. Mysql root 178.112.123.231">
+      <button class="button" style="vertical-align:middle"> <span>Save to database</span></button>
+    </div> -->
+  </div>  
+</body>
+</html>
